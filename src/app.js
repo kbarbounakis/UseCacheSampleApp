@@ -53,8 +53,13 @@ function getApplication() {
     app.use(cors());
     
     const dataAppication = new ExpressDataApplication(path.resolve(__dirname, 'config'));
-    app.set(ExpressDataApplication.name, dataAppication);
-
+    // finalize default service
+    dataAppication.getConfiguration().getStrategy(DataCacheStrategy).finalize();
+    // set new cache strategy
+    dataAppication.getConfiguration().useStrategy(DataCacheStrategy, DiskCacheStrategy);
+    // set data application
+    app.set(ExpressDataApplication, dataAppication);
+    // use data application middleware
     app.use(dataAppication.middleware());
 
     // https://expressjs.com/en/guide/using-template-engines.html
@@ -64,8 +69,9 @@ function getApplication() {
     app.get('/', (req, res) => {
         return res.render('index');
     });
-    const cacheStrategy = new DiskCacheStrategy(new ConfigurationBase());
-    app.set(DataCacheStrategy, cacheStrategy);
+    // get cache strategy
+    const cacheStrategy = dataAppication.getConfiguration().getStrategy(DataCacheStrategy);
+    // setup cache
     app.use(OutputCaching.setup(cacheStrategy));
     app.use('/api/Products', OutputCaching.cache());
     app.use('/api/ActionStatusTypes', OutputCaching.cache(clientCacheProfile));

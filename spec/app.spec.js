@@ -1,6 +1,7 @@
 import { getApplication } from '../src/index';
 import request from 'supertest';
 import { DataCacheStrategy } from '@themost/cache';
+import { ExpressDataApplication } from '@themost/express';
 describe('app', () => {
     /**
      * @type {import('express').Application}
@@ -10,9 +11,12 @@ describe('app', () => {
         app = getApplication();
     });
     afterAll(async () => {
-        const cacheStrategy = app.get(DataCacheStrategy);
-        if (cacheStrategy) {
-            await cacheStrategy.finalize();
+        /**
+         * @type {ExpressDataApplication}
+         */
+        const dataApplication = app.get(ExpressDataApplication);
+        if (dataApplication) {
+            await dataApplication.getConfiguration().getStrategy(DataCacheStrategy).finalize();
         }
     });
     it('should get index', async () => {
