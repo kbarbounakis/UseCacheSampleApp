@@ -2,7 +2,47 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import {ExpressDataApplication, serviceRouter} from '@themost/express';
-import { OutputCaching } from '@themost/cache/platform-server'
+import { OutputCaching } from '@themost/cache/platform-server';
+
+const clientCacheProfile = {
+    location: 'client',
+    duration: 60 * 60, // 1 hour
+    varyByHeader: [
+        'accept',
+        'accept-encoding',
+        'accept-language',
+        'accept-profile'
+    ],
+    varyByParam: [
+        '*' // use any query param
+    ],
+    varyByCallback: async (req) => {
+        if (req.headers.authorization) {
+            return `context=${MD5(req.headers.authorization).toString()}`
+        }
+        return null;
+    } 
+}
+
+const serverAndClientCacheProfile = {
+    location: 'client',
+    duration: 60 * 60, // 1 hour
+    varyByHeader: [
+        'accept',
+        'accept-encoding',
+        'accept-language',
+        'accept-profile'
+    ],
+    varyByParam: [
+        '*' // use any query param
+    ],
+    varyByCallback: async (req) => {
+        if (req.headers.authorization) {
+            return `context=${MD5(req.headers.authorization).toString()}`
+        }
+        return null;
+    } 
+}
 
 function getApplication() {
     // init app
@@ -24,6 +64,7 @@ function getApplication() {
     });
     app.use(OutputCaching.setup());
     app.use('/api/Products', OutputCaching.cache());
+    app.use('/api/ActionStatusTypes', OutputCaching.cache(clientCacheProfile));
     app.use('/api/', serviceRouter);
 
     // and return
