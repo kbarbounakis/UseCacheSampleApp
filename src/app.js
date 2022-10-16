@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import {ExpressDataApplication, serviceRouter} from '@themost/express';
-import { OutputCaching } from '@themost/cache/platform-server';
+import { OutputCaching, DiskCacheStrategy } from '@themost/cache/platform-server';
+import { DataCacheStrategy } from '@themost/cache';
+import { ConfigurationBase } from '@themost/common';
 
 const clientCacheProfile = {
     location: 'client',
@@ -62,7 +64,9 @@ function getApplication() {
     app.get('/', (req, res) => {
         return res.render('index');
     });
-    app.use(OutputCaching.setup());
+    const cacheStrategy = new DiskCacheStrategy(new ConfigurationBase());
+    app.set(DataCacheStrategy, cacheStrategy);
+    app.use(OutputCaching.setup(cacheStrategy));
     app.use('/api/Products', OutputCaching.cache());
     app.use('/api/ActionStatusTypes', OutputCaching.cache(clientCacheProfile));
     app.use('/api/', serviceRouter);
