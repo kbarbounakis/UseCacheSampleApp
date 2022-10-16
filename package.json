@@ -23,14 +23,20 @@
     "@themost/sqlite": "^2.6.8",
     "@themost/xml": "^2.5.2",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "debug": "^4.3.4",
     "ejs": "^3.1.8",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mkdirp": "^1.0.4",
+    "moment": "^2.29.4",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",
     "@babel/core": "^7.19.3",
     "@babel/eslint-parser": "^7.19.1",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.19.3",
     "@babel/preset-env": "^7.19.4",
     "@babel/register": "^7.18.9",
     "@types/jest": "^29.1.2",
@@ -44,7 +50,8 @@
   "nodemonConfig": {
     "watch": [
       "src",
-      "spec"
+      "spec",
+      "modules"
     ],
     "execMap": {
       "js": "node --require @babel/register --require module-alias/register --require dotenv/config"
@@ -57,7 +64,7 @@
     "ext": "js,json"
   },
   "_moduleAliases": {
-    "@themost/cache/platform-server": "../../platform-server/dist/index",
-    "@themost/cache": "../../dist/index"
+    "@themost/cache/platform-server": "modules/cache/platform-server/src/index",
+    "@themost/cache": "modules/cache/src/index"
   }
 }

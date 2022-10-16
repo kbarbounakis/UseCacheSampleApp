@@ -1,8 +1,6 @@
 module.exports = function (api) {
     api.cache(false);
     return {
-        "sourceMap": "both",
-        "retainLines": true,
         "presets": [
             [
                 "@babel/preset-env",
@@ -11,6 +9,16 @@ module.exports = function (api) {
                         "node": "current"
                     }
                 }
+            ]
+        ],
+        "plugins": [
+            [
+                "@babel/plugin-proposal-decorators", {
+                    "legacy": true
+                }
+            ],
+            [
+                "@babel/plugin-proposal-class-properties"
             ]
         ]
     }

@@ -23,7 +23,8 @@ function getApplication() {
         return res.render('index');
     });
     app.use(OutputCaching.setup());
-    app.use('/api/', OutputCaching.preCache(), serviceRouter);
+    app.use('/api/Products', OutputCaching.cache());
+    app.use('/api/', serviceRouter);
 
     // and return
     return app;
