@@ -27,7 +27,7 @@ const clientCacheProfile = {
 }
 
 const serverAndClientCacheProfile = {
-    location: 'client',
+    location: 'serverAndClient',
     duration: 60 * 60, // 1 hour
     varyByHeader: [
         'accept',
@@ -75,6 +75,7 @@ function getApplication() {
     app.use(OutputCaching.setup(cacheStrategy));
     app.use('/api/Products', OutputCaching.cache());
     app.use('/api/ActionStatusTypes', OutputCaching.cache(clientCacheProfile));
+    app.use('/api/Countries', OutputCaching.cache(serverAndClientCacheProfile));
     app.use('/api/', serviceRouter);
 
     // and return
