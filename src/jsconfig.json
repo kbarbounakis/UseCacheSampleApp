@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "paths": {
+            "@themost/cache/platform-server": [
+                "modules/cache/platform-server/src/index"
+            ],
+            "@themost/cache": [
+                "modules/cache/src/index"
+            ]
+        }
+    }
+}
