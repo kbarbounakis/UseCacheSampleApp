@@ -2,9 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import {ExpressDataApplication, serviceRouter} from '@themost/express';
-import { OutputCaching, DiskCacheStrategy } from '@themost/cache/platform-server';
+import { OutputCaching, IndexedCacheStrategy } from '@themost/cache/platform-server';
 import { DataCacheStrategy } from '@themost/cache';
-import { ConfigurationBase } from '@themost/common';
 
 const clientCacheProfile = {
     location: 'client',
@@ -56,7 +55,7 @@ function getApplication() {
     // finalize default service
     dataAppication.getConfiguration().getStrategy(DataCacheStrategy).finalize();
     // set new cache strategy
-    dataAppication.getConfiguration().useStrategy(DataCacheStrategy, DiskCacheStrategy);
+    dataAppication.getConfiguration().useStrategy(DataCacheStrategy, IndexedCacheStrategy);
     // set data application
     app.set(ExpressDataApplication, dataAppication);
     // use data application middleware
