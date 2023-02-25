@@ -1,3 +1,3 @@
 [submodule "modules/cache"]
 	path = modules/cache
-	url = git@github.com:themost-framework/cache.git
+	url = https://github.com/themost-framework/cache.git
